@@ -1,0 +1,4 @@
+Sample1,CCGCGGTT
+Sample2,CAAGCTAG
+Sample3,AGCCTCAT
+Sample4,TGGATCGA

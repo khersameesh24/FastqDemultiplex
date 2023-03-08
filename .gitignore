@@ -130,3 +130,7 @@ dmypy.json
 
 # ide settings
 .vscode/
+
+# run ouput
+*.fastq.gz
+*.log
