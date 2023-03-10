@@ -1,6 +1,6 @@
 """
 class to demultiplex an input fastq file and write
-fastq based on the sample and indexes found in the 
+fastq based on the sample and indexes found in the
 samplesheet
 """
 
@@ -8,7 +8,8 @@ import gzip
 import os
 from src.samplesheet_reader import read_samplesheet
 from src.fastq_reader import read_fastq
-from src.utils import serialize_fastqobj, logger
+from src.utils import serialize_fastqobj
+# from src.utils import logger
 
 
 class FastqWriter:
@@ -22,7 +23,10 @@ class FastqWriter:
     fastq files
     """
 
-    def __init__(self, samplesheet_path, fastq_file_path, output_path=os.getcwd()) -> None:
+    def __init__(self,
+                 samplesheet_path,
+                 fastq_file_path,
+                 output_path=os.getcwd()) -> None:
         self.samplesheet_path = samplesheet_path
         self.fastq_file_path = fastq_file_path
         self.output_path = output_path
@@ -37,15 +41,16 @@ class FastqWriter:
             os.makedirs(self.output_path, exist_ok=False)
 
         # generate file handles for output files
-        logger.debug("Generating output fastq filehandlers.")
+        # logger.debug("Generating output fastq filehandlers.")
         file_handles = {index: gzip.open(
-            f"{self.output_path}/{sample_name}_{index}.fastq.gz", "wt") for sample_name, index in samplesheet_data.items()}
+            f"{self.output_path}/{sample_name}_{index}.fastq.gz", "wt")
+            for sample_name, index in samplesheet_data.items()}
 
         # add a file handle for unknown sequences
         unknown_seq = gzip.open(f"{self.output_path}/UNKNOWN.fastq.gz", 'wt')
         file_handles["UNKNOWN.fastq.gz"] = unknown_seq
 
-        logger.debug("Writing demultiplexed fastq files.")
+        # logger.debug("Writing demultiplexed fastq files.")
         for fastq_obj in fastq_data:
 
             # generate index for sequence identifier
@@ -61,5 +66,5 @@ class FastqWriter:
         # close the file handles
         for handle in file_handles.values():
             handle.close()
-        logger.info(
-            f"Demultiplexed fastq files generated at {self.output_path}")
+        # logger.info(
+        # f"Demultiplexed fastq files generated at {self.output_path}")

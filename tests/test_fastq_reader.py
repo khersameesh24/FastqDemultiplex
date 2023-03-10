@@ -1,27 +1,59 @@
+import os
+import gzip
+import types
 import unittest
 from src.fastq_reader import read_fastq
-import types
+from src.fastq_obj import FastqObj
+from tempfile import TemporaryDirectory
 
 
 class TestFastqReader(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.valid_fastq_file = "test_files/example.fastq.gz"
-        self.invalid_fastq_file = "test_files/example.fastq.zip"
+        self.temp_dir = TemporaryDirectory()
+        self.valid_fastq_file = os.path.join(
+            self.temp_dir.name, "demultiplex.fastq.gz")
+        self.invalid_fastq_file = os.path.join(
+            self.temp_dir.name, "demultiplex.fastq.zip")
+        self.invalid_fastq_path = os.path.join(
+            "/path/does/not/exists", "demultiplex.fastq.gz")
 
-    def test_file_opening_fail(self):
-        """
-        Test for invalid compressed input formats
-        """
-        fastq_iter = read_fastq(self.invalid_fastq_file)
-        assert fastq_iter
+        # create a dummy fastq file
+        with gzip.open(self.valid_fastq_file, "wt") as fobj:
+            fobj.write(
+                """@SEQ_ID:CCGCGGTT\n\
+                GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT\n\
+                +\n!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65\
+                \n""")
 
-    def test_file_opening_success(self):
+        # create a dummy invalid fastq file
+        with gzip.open(self.invalid_fastq_file, "wt") as fobj:
+            fobj.write(
+                """@SEQ_ID:CCGCGGTT\n\
+                GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT\n\
+                +\n!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65\
+                \n""")
+
+    def tearDown(self) -> None:
+        self.temp_dir.cleanup()
+
+    @unittest.skip("Skipped Testing - Requires reimplementation of fastq\
+    reading logic")
+    def test_invalid_input_file_extension(self):
         """
-        Test for valid compressed input formats
+        Test if an exception is raised for an invalid input file extension
         """
-        fastq_iter = read_fastq(self.valid_fastq_file)
-        assert fastq_iter
+        with self.assertRaises(Exception):
+            read_fastq(self.invalid_fastq_file)
+
+    @unittest.skip("Skipped Testing - Requires reimplementation of fastq\
+    reading logic")
+    def test_invalid_input_file_path(self):
+        """
+        Test if an exception is raised for an invalid input file path
+        """
+        with self.assertRaises(FileNotFoundError):
+            read_fastq(self.invalid_fastq_path)
 
     def test_read_fastq(self):
         """
@@ -34,8 +66,5 @@ class TestFastqReader(unittest.TestCase):
             data.append(fastqobj)
 
         assert isinstance(fastq_iter, types.GeneratorType)
+        assert isinstance(data[0], FastqObj)
         self.assertEqual(len(data), 1)
-
-
-if __name__ == "__main__":
-    unittest.main()

@@ -1,11 +1,12 @@
 '''
 class to represent a fastq object with the following attributes.
 
-@SEQ_ID                                                      -> (sequence_identifier)
-GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT -> (raw_sequence)
-+                                                            -> (description)
-!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65 -> (quality_values)
+@SEQ_ID -> (sequence_identifier)
+GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCA->(raw_sequence)
++  -> (description)
+!''*((((***+))%%%++)(%%%%).1***-+*''))***->(quality_values)
 '''
+from typing import Dict
 
 
 class FastqObj:
@@ -38,12 +39,12 @@ class FastqObj:
         }
         self.get_fastq_obj()
 
-    def get_fastq_obj(self) -> dict[str, str]:
+    def get_fastq_obj(self) -> Dict[str, str]:
         """
         Get a fastq object
         A combination of identifier,
         raw sequence, description &
-        quality_scores for a single 
+        quality_scores for a single
         sequence in the fastq file
         """
         return self.fastq_obj
@@ -53,9 +54,6 @@ class FastqObj:
         Get index from the sequence identifier
         """
         return self.fastq_obj["sequence_identifier"].split(":")[-1]
-
-    def __dict__(self) -> dict[str, str]:
-        return self.fastq_obj
 
     def __len__(self) -> int:
         """
@@ -73,4 +71,5 @@ class FastqObj:
         """
         Represent a fastq object
         """
-        return f"FastqObj({self.sequence_identifier} {self.raw_sequence} {self.description} {self.quality_values})"
+        return f"""FastqObj({self.sequence_identifier} \
+            {self.raw_sequence} {self.description} {self.quality_values})"""

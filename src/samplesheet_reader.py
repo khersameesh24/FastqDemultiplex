@@ -22,15 +22,14 @@ def read_samplesheet(samplesheet_path: str) -> dict[str, str]:
         if file_ext == ".csv":
             with open(samplesheet_path, 'rt') as fileobj:
                 data = csv.reader(fileobj, delimiter=",")
-
-                for sample, index in data:
-                    samplesheet_data[sample] = index
+                for row in data:
+                    samplesheet_data[row[0]] = row[1]
         else:
-            logger.error("Invalid samplesheet file format.")
-            raise Exception(
-                "Check if the samplesheet is in the correct format.")
+            # logger.error("Invalid samplesheet file format.")
+            raise Exception("Check if the samplesheet is in the correct format.")
     else:
-        logger.error("Check if the samplesheet exists.")
+        # logger.error("Check if the samplesheet exists.")
         raise FileNotFoundError("Check if the samplesheet exists.")
 
     return samplesheet_data
+
