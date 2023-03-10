@@ -40,7 +40,7 @@ print(
 --------------------------Launching Unit Test-------------------------------
 \n"""
 )
-unittest.TextTestRunner(verbosity=0, descriptions=False).run(
+unittest.TextTestRunner(verbosity=3, descriptions=False).run(
     demultiplex_unit_test_suite
 )
 
@@ -49,6 +49,6 @@ print(
 -----------------------Launching Integration Test---------------------------
 \n"""
 )
-unittest.TextTestRunner(verbosity=0, descriptions=False).run(
+unittest.TextTestRunner(verbosity=3, descriptions=False).run(
     demultiplex_integration_test_suite
 )
