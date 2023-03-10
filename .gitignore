@@ -132,5 +132,4 @@ dmypy.json
 .vscode/
 
 # run ouput
-*.fastq.gz
 *.log
