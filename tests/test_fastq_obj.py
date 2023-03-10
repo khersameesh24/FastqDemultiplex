@@ -8,18 +8,22 @@ import gzip
 
 
 class TestFastObj(unittest.TestCase):
-
     def setUp(self) -> None:
         self.temp_dir = TemporaryDirectory()
         self.fastq_file = os.path.join(
-            self.temp_dir.name, "demultiplex.fastq.gz")
+            self.temp_dir.name, "demultiplex.fastq.gz"
+        )
 
         # create a dummy fastq file
         with gzip.open(self.fastq_file, "wt") as fobj:
             fobj.write("""@SEQ_ID:CCTAGACC\n""")
-            fobj.write("""GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT\n""")
+            fobj.write(
+                """GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT\n"""
+            )
             fobj.write("""+\n""")
-            fobj.write("""!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65\n""")
+            fobj.write(
+                """!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65\n"""
+            )
 
         self.fastq_iter = read_fastq(self.fastq_file)
         self.data = [fastqobj for fastqobj in self.fastq_iter]
@@ -43,19 +47,23 @@ class TestFastObj(unittest.TestCase):
 
         # check fastq attribute values
         self.assertEqual(self.data[0].sequence_identifier, "@SEQ_ID:CCTAGACC")
-        self.assertEqual(self.data[0].raw_sequence, "GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT")
+        self.assertEqual(
+            self.data[0].raw_sequence,
+            "GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT",
+        )
         self.assertEqual(self.data[0].description, "+")
-        self.assertEqual(self.data[0].quality_values, "!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65")
+        self.assertEqual(
+            self.data[0].quality_values,
+            "!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65",
+        )
 
     def test_get_fastq_obj(self) -> None:
         fastq_obj = self.data[0].get_fastq_obj()
         expected_fastq_obj: dict[str, str] = {
             "sequence_identifier": "@SEQ_ID:CCTAGACC",
-            "raw_sequence":
-            "GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT",
+            "raw_sequence": "GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT",
             "description": "+",
-            "quality_values":
-            "!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65"
+            "quality_values": "!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65",
         }
         self.assertEqual(fastq_obj, expected_fastq_obj)
 

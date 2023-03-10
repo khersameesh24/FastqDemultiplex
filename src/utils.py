@@ -9,11 +9,11 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter(
-    '%(asctime)s  [%(levelname)s]  %(message)s', '%m-%d-%Y %H:%M'
+    "%(asctime)s  [%(levelname)s]  %(message)s", "%m-%d-%Y %H:%M"
 )
 
 # file logger
-file_handler = logging.FileHandler('demultiplex.log', mode='w')
+file_handler = logging.FileHandler("demultiplex.log", mode="w")
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(formatter)
 

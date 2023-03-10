@@ -9,6 +9,7 @@ import os
 from src.samplesheet_reader import read_samplesheet
 from src.fastq_reader import read_fastq
 from src.utils import serialize_fastqobj
+
 # from src.utils import logger
 
 
@@ -23,10 +24,9 @@ class FastqWriter:
     fastq files
     """
 
-    def __init__(self,
-                 samplesheet_path,
-                 fastq_file_path,
-                 output_path=os.getcwd()) -> None:
+    def __init__(
+        self, samplesheet_path, fastq_file_path, output_path=os.getcwd()
+    ) -> None:
         self.samplesheet_path = samplesheet_path
         self.fastq_file_path = fastq_file_path
         self.output_path = output_path
@@ -42,12 +42,15 @@ class FastqWriter:
 
         # generate file handles for output files
         # logger.debug("Generating output fastq filehandlers.")
-        file_handles = {index: gzip.open(
-            f"{self.output_path}/{sample_name}_{index}.fastq.gz", "wt")
-            for sample_name, index in samplesheet_data.items()}
+        file_handles = {
+            index: gzip.open(
+                f"{self.output_path}/{sample_name}_{index}.fastq.gz", "wt"
+            )
+            for sample_name, index in samplesheet_data.items()
+        }
 
         # add a file handle for unknown sequences
-        unknown_seq = gzip.open(f"{self.output_path}/UNKNOWN.fastq.gz", 'wt')
+        unknown_seq = gzip.open(f"{self.output_path}/UNKNOWN.fastq.gz", "wt")
         file_handles["UNKNOWN.fastq.gz"] = unknown_seq
 
         # logger.debug("Writing demultiplexed fastq files.")
@@ -61,7 +64,8 @@ class FastqWriter:
                 file_handles[index].write(serialize_fastqobj(fastq_obj))
             else:
                 file_handles["UNKNOWN.fastq.gz"].write(
-                    serialize_fastqobj(fastq_obj))
+                    serialize_fastqobj(fastq_obj)
+                )
 
         # close the file handles
         for handle in file_handles.values():

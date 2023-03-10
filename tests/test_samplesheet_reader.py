@@ -1,25 +1,39 @@
+"""
+Test the samplesheet reader functionality
+"""
+
+
 import unittest
 import os
-import csv
-from src.samplesheet_reader import read_samplesheet
 from tempfile import TemporaryDirectory
+from src.samplesheet_reader import read_samplesheet
 
 
 class TestSamplesheetReader(unittest.TestCase):
+    """
+    Class to test the samplesheet reader functionality
+    """
 
     def setUp(self) -> None:
         self.temp_dir = TemporaryDirectory()
         self.valid_samplesheet = os.path.join(
-            self.temp_dir.name, "samplesheet.csv")
+            self.temp_dir.name, "samplesheet.csv"
+        )
         self.invalid_samplesheet = os.path.join(
-            self.temp_dir.name, "invalid_samplesheet.txt")
+            self.temp_dir.name, "invalid_samplesheet.txt"
+        )
         self.non_existent_samplesheet = os.path.join(
-            "/path/does/not/exists", "samplesheet.csv")
+            "/path/does/not/exists", "samplesheet.csv"
+        )
 
         # create a dummy samplesheet
-        samplesheet_data = {'Sample1': 'CCGCGGTT', 'Sample2': 'CAAGCTAG',
-                            'Sample3': 'AGCCTCAT', 'Sample4': 'TGGATCGA'}
-        with open(self.valid_samplesheet, 'wt') as fobj:
+        samplesheet_data = {
+            "Sample1": "CCGCGGTT",
+            "Sample2": "CAAGCTAG",
+            "Sample3": "AGCCTCAT",
+            "Sample4": "TGGATCGA",
+        }
+        with open(self.valid_samplesheet, "wt", encoding="utf-8") as fobj:
             for sample, index in samplesheet_data.items():
                 fobj.write(f"{sample},{index}\n")
 
@@ -59,5 +73,9 @@ class TestSamplesheetReader(unittest.TestCase):
             self.assertIsInstance(index, str)
 
         expected_data: dict[str, str] = {
-            'Sample1': 'CCGCGGTT', 'Sample2': 'CAAGCTAG', 'Sample3': 'AGCCTCAT', 'Sample4': 'TGGATCGA'}
+            "Sample1": "CCGCGGTT",
+            "Sample2": "CAAGCTAG",
+            "Sample3": "AGCCTCAT",
+            "Sample4": "TGGATCGA",
+        }
         self.assertEqual(data, expected_data)

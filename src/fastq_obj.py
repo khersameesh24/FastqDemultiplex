@@ -1,11 +1,11 @@
-'''
+"""
 class to represent a fastq object with the following attributes.
 
 @SEQ_ID -> (sequence_identifier)
 GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCA->(raw_sequence)
 +  -> (description)
 !''*((((***+))%%%++)(%%%%).1***-+*''))***->(quality_values)
-'''
+"""
 from typing import Dict
 
 
@@ -24,7 +24,7 @@ class FastqObj:
         sequence_identifier: str,
         raw_sequence: str,
         description: str,
-        quality_values: str
+        quality_values: str,
     ) -> None:
         self.sequence_identifier: str = sequence_identifier
         self.raw_sequence: str = raw_sequence
@@ -35,7 +35,7 @@ class FastqObj:
             "sequence_identifier": self.sequence_identifier,
             "raw_sequence": self.raw_sequence,
             "description": self.description,
-            "quality_values": self.quality_values
+            "quality_values": self.quality_values,
         }
         self.get_fastq_obj()
 
