@@ -26,7 +26,7 @@ To install the tool as a command line utility download/clone the repository.
 ## Usage
 ---
 ```
-$ demultiplex -h
+$ demultiplex.py -h
 usage: demultiplex [-h] -i FASTQ_FILE -s SAMPLESHEET [-o PATH]
 
 Demultiplex input fastq file based on the indexes in the
@@ -62,7 +62,7 @@ GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCAGATAGTAGTCAATCTAC
 
 ### **Example usage**
 ```
-$ demultiplex -i tests/test_files/demultiplex.fastq.gz \
+$ demultiplex.py -i tests/test_files/demultiplex.fastq.gz \
               -s tests/test_files/samplesheet.csv \
               -o ./fastq_ouputs
 ```
